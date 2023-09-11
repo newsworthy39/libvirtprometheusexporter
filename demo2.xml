@@ -1,0 +1,31 @@
+<domain type="kvm">
+	<name>demo2</name>
+	<uuid>b8d7388a-bbf2-db3a-e962-b97ca6e514bd</uuid>
+	<memory unit="MB">1024</memory>
+	<currentMemory unit="MB">1024</currentMemory>
+	<vcpu>2</vcpu>
+	<os>
+		<type arch="x86_64" machine="pc">hvm</type>
+		<boot dev="cdrom" />
+	</os>
+	<devices>
+		<emulator>/usr/bin/kvm</emulator>
+		<disk type='file' device='cdrom'>
+			<source file='/var/lib/libvirt/images/ubuntu-22.04.2-live-server-amd64.iso' />
+			<target dev='hdc' />
+			<readonly />
+		</disk>
+		<disk type="file" device="disk">
+			<source file='/var/lib/libvirt/images/demo2.img' />
+			<target dev="vda" bus="virtio" />
+		</disk>
+
+		<interface type="network">
+			<source network="macvtap-net" />
+			<model type="virtio" />
+		</interface>
+		<graphics type='vnc' port='-1' listen="0.0.0.0" autoport="yes" />
+		<watchdog model='i6300esb' action='poweroff' />
+		<memballoon model='virtio'/>
+	</devices>
+</domain>
