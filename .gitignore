@@ -1,5 +1,3 @@
-client
-timer
-libvirtexporter
-debian/libvirtprometheusexporter/**
+libvirt-prometheus-exporter
+debian/libvirt-prometheus-exporter/**
 debian/.debhelper/**
