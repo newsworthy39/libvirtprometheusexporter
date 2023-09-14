@@ -3,16 +3,16 @@ CC=g++ -std=c++20 -Iinclude
 LINK=-lvirt
 
 .PHONY: all
-all: clean libvirtexporter
+all: clean libvirt-prometheus-exporter
 
-libvirtexporter: src/prometheus.cpp
+libvirt-prometheus-exporter: src/prometheus.cpp
 	$(CC) $< -o $@ $(LINK)
 
 clean: 
-	rm -f libvirtexporter 
+	rm -f libvirt-prometheus-exporter 
 
 uninstall:
-	rm -f /usr/bin/libvirtexporter
+	rm -f /usr/bin/libvirt-prometheus-exporter
 
 install:
-	install -m 0755 libvirtexporter /usr/bin
+	install -m 0755 libvirt-prometheus-exporter /usr/bin

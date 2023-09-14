@@ -1,11 +1,11 @@
-Source: libvirtprometheusexporter  
+Source: libvirt-prometheus-exporter  
 Maintainer: Newsworthy39 <newsworthy39@launchpad.net>
 Build-Depends: debhelper, libvirt-daemon (>= 8.0.0)
 Standards-Version: 3.9.3
 Section: utils
 Priority: optional
 
-Package: libvirtprometheusexporter
+Package: libvirt-prometheus-exporter  
 Priority: optional  
 Section: utils
 Architecture: amd64
