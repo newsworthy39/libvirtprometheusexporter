@@ -1,3 +1,6 @@
 libvirt-prometheus-exporter
 debian/libvirt-prometheus-exporter/**
 debian/.debhelper/**
+*.deb
+*.buildinfo
+*.changes
