@@ -1,13 +1,17 @@
 NAME
-    libvirtexporter - a prometheus exporter for libvirt
+    libvirt-prometheus-exporter - a prometheus exporter for libvirt
 
 SYNOPSIS
-    libvirtexporter http-port libvirt-ipc-url
+    libvirt-prometheus-exporter {http-port} {libvirt-ipc-url}
 
-DESCRIPTION
+DESCRIPTION    
     http-port
         the http-port to listen on.
     libvirt-ipc-url
         e.g qemu:///system
+
+ENVIRONMENT FOR SYSTEMD
+    /etc/default/libvirt-prometheus-exporter
+    
     
 Made by newsworthy39
