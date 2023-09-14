@@ -26,5 +26,3 @@
 
 ### Changelog
     remember to update the changelog in debian/changelog
-
-Made by newsworthy39
