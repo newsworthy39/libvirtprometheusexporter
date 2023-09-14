@@ -68,6 +68,14 @@ std::vector<T> vectorDifference(const std::vector<T> &v1, const std::vector<T> &
     return result;
 }
 
+/**
+ * @brief This server function, serves as a guard, initializing and proxying the nn_send-function.
+ *        This function blocks indefinitely.
+ * 
+ * @param url the url to bind to
+ * @param fnc lambda, to send back to local lambda
+ * @return int 0
+ */
 int server(const char *url, std::function<void(std::function<void(const char *msg, int length)>)> fnc)
 {
     // Allways populate at the beginning, to avoid unnecessary
@@ -84,7 +92,8 @@ int server(const char *url, std::function<void(std::function<void(const char *ms
 
     for (;;)
     {
-        // send messages, if any.
+        // send messages, if any. We use a proxy to avoid refencing local/stack-variables and 
+        // to avoid the heap.
         auto snd = [&sock](const char *msg, int length)
         {
             int bytes = nn_send(sock, msg, length, 0);
@@ -94,9 +103,8 @@ int server(const char *url, std::function<void(std::function<void(const char *ms
             }
         };
 
-        fnc(snd);
+        fnc(snd); // dumpster fires are fun.
 
-        // wait abit
         using namespace std::chrono_literals;
         std::this_thread::sleep_for(1000ms);
     }

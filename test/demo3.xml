@@ -1,13 +1,15 @@
 <domain type="kvm">
-	<name>demo2</name>
-	<uuid>b8d7388a-bbf2-db3a-e962-b97ca6e514bd</uuid>
+	<name>demo3</name>
+	<uuid>b8d7388a-bbf2-db3a-e962-b97ca6e514bc</uuid>
 	<memory unit="MB">1024</memory>
 	<currentMemory unit="MB">1024</currentMemory>
 	<vcpu>2</vcpu>
 	<os>
 		<type arch="x86_64" machine="pc">hvm</type>
+		<boot dev="hd" />
 		<boot dev="cdrom" />
 	</os>
+	<cpu mode='host-passthrough' />
 	<devices>
 		<emulator>/usr/bin/kvm</emulator>
 		<disk type='file' device='cdrom'>
@@ -16,12 +18,13 @@
 			<readonly />
 		</disk>
 		<disk type="file" device="disk">
-			<source file='/var/lib/libvirt/images/demo2.img' />
+			<driver name='qemu' type='qcow2'/>			
+			<source file='/mnt/93e38b44-5645-4322-acc1-ca993583a5a8/demo3.img' />
 			<target dev="vda" bus="virtio" />
 		</disk>
 
 		<interface type="network">
-			<source network="macvtap-net" />
+			<source network="default" />
 			<model type="virtio" />
 		</interface>
 		<graphics type='vnc' port='-1' listen="0.0.0.0" autoport="yes" />
