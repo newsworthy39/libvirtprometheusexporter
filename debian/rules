@@ -4,7 +4,7 @@
 	dh $@
 
 override_dh_auto_install:
-	install -D -m 0755 libvirt-prometheus-exporter $$(pwd)/debian/libvirtprometheusexporter/usr/bin/libvirt-prometheus-exporter
+	install -D -m 0755 libvirt-prometheus-exporter $$(pwd)/debian/libvirt-prometheus-exporter/usr/bin/libvirt-prometheus-exporter
 	
 override_dh_usrlocal:	
 	# do nothing
