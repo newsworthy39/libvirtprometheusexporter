@@ -3,7 +3,7 @@ libvirt-prometheus-exporter (0.2.1) jammy; urgency=low
   * Updated documentation for better viewing and
     making it more readable online in markdown.
 
- -- Newsworthy39 <newsworthy39@launchpad.net>  Thu, 14 Sep 2023 20:20:37 +0000
+ -- Michael Jensen <michaeljensendk@hotmail.com>  Thu, 14 Sep 2023 20:20:37 +0000
 
 libvirt-prometheus-exporter (0.2.0) jammy; urgency=low
 
