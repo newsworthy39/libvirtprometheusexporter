@@ -4,12 +4,12 @@ Documentation=man:libvirtexporter(1)
 After=network.target libvirtd.service 
 
 [Service]
-EnvironmentFile=-/etc/default/libvirtexporter
+EnvironmentFile=/etc/default/libvirtprometheusexporter
 ExecStart=/usr/bin/libvirtexporter $PORT_OPTS $QEMU_DIR
 KillMode=process
 Restart=on-failure
 RestartPreventExitStatus=255
-Type=notify
+Type=simple
 RuntimeDirectoryMode=0755
 
 [Install]
