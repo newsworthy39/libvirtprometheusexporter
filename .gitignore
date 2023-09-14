@@ -1,2 +1,5 @@
 client
 timer
+libvirtexporter
+debian/libvirtprometheusexporter/**
+debian/.debhelper/**
