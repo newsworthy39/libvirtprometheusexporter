@@ -1,0 +1,15 @@
+#!/usr/bin/make -f  
+#export DH_VERBOSE = 1
+%:  
+	dh $@ --with=systemd
+
+override_dh_auto_install:
+	install -D -m 0755 libvirtexporter $$(pwd)/debian/libvirtprometheusexporter/usr/bin/libvirtexporter
+	
+override_dh_usrlocal:	
+	# do nothing
+
+override_dh_strip:
+	# do nothing
+
+#

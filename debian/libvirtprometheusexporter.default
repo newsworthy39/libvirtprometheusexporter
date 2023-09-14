@@ -1,0 +1,8 @@
+# the PORT_OPTS is the default port to 
+# listen on
+PORT_OPTS=9090
+
+# The QEMU_DIR is a default-variable, to 
+# point the libvirtexporter to a local 
+# libvirt daemon
+QEMU_DIR="qemu:///system"

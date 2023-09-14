@@ -1,0 +1,15 @@
+Source: libvirtprometheusexporter  
+Maintainer: Newsworthy39 <newsworthy39@launchpad.net>
+Build-Depends: debhelper, libvirt-daemon (>= 8.0.0)
+Standards-Version: 3.9.3
+Section: utils
+Priority: optional
+
+Package: libvirtprometheusexporter
+Priority: optional  
+Section: utils
+Architecture: amd64
+Depends: ${shlibs:Depends}
+Description: a simple libvirt prometheus exporter.
+ The exporter exports cpu and network metrics in the global 
+ namespace.
