@@ -12,5 +12,8 @@ debuild
 # build source
 debuild -S
 
+# remove build-directory
+rm -rf ${BUILDDIR}
+
 # output
-echo "Now run dput ppa:newsworthy39/libvirtpromexporter ../libvirt-prometheus-exporter_x.x.x_source.changes"
+echo "* run dput ppa:newsworthy39/libvirtpromexporter ${BUILDDIR}_source.changes"
