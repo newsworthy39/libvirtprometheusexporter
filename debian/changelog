@@ -1,3 +1,15 @@
+libvirt-prometheus-exporter (0.2.5) jammy; urgency=low
+
+  * BUGIFX: sanitize build
+
+ -- Michael Jensen <michaeljensendk@hotmail.com>  Thu, 15 Sep 2023 22:40:37 +0000
+
+libvirt-prometheus-exporter (0.2.4) jammy; urgency=low
+
+  * BUGFIX: Deps
+
+ -- Michael Jensen <michaeljensendk@hotmail.com>  Thu, 15 Sep 2023 20:30:37 +0000
+
 libvirt-prometheus-exporter (0.2.3) jammy; urgency=low
 
   * BUGFIX: Made exporter exit, when the endpoint is not available.
