@@ -9,7 +9,7 @@ Package: libvirt-prometheus-exporter
 Priority: optional  
 Section: utils
 Architecture: amd64
-Depends: ${shlibs:Depends}, libvirt-daemon (>= 8.0.0)
+Depends: ${shlibs:Depends}, libvirt-daemon (>= 8.0.0), libvirt-daemon-system (>= 8.0.0)
 Description: a simple libvirt prometheus exporter.
  The exporter exports cpu and network metrics in the global 
  namespace.
