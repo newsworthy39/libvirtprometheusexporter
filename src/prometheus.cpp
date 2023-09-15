@@ -180,7 +180,8 @@ int main(int argc, char **argv)
     virConnectPtr conn = virConnectOpenReadOnly(argv[2]);
     if (conn == NULL)
     {
-        fprintf(stderr, "Failed to connect to hypervisor\n");
+        fprintf(stderr, "Failed to connect to %s\n", argv[2]);
+        return (EXIT_FAILURE);
     }
 
     // Setup a stream_server, and use the lambda below

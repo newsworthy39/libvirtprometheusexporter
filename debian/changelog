@@ -1,3 +1,9 @@
+libvirt-prometheus-exporter (0.2.3) jammy; urgency=low
+
+  * BUGFIX: Made exporter exit, when the endpoint is not available.
+
+ -- Michael Jensen <michaeljensendk@hotmail.com>  Thu, 15 Sep 2023 20:12:37 +0000
+
 libvirt-prometheus-exporter (0.2.2) jammy; urgency=low
 
   * Added missing build-dependecy for libvirt-dev
