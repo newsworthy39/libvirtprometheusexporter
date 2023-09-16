@@ -4,3 +4,4 @@ debian/.debhelper/**
 *.deb
 *.buildinfo
 *.changes
+src/*.o

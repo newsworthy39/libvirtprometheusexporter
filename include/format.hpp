@@ -1,11 +1,16 @@
+#ifndef __FORMAT_HPP__
+#define __FORMAT_HPP__
+
 #include <memory>
 #include <string>
 #include <stdexcept>
+#include <vector>
 
 namespace custom
 {
+
     template <typename... Args>
-    std::string format(const std::string &format, Args... args)
+    inline std::string format(const std::string &format, Args... args)
     {
         int size_s = std::snprintf(nullptr, 0, format.c_str(), args...) + 1; // Extra space for '\0'
         if (size_s <= 0)
@@ -26,7 +31,8 @@ namespace custom
      * @param version
      * @return std::string
      */
-    std::string generate_prometheus(std::string reply, int response = 200, std::string version = "HTTP/1.0")
+
+    inline std::string generate_prometheus(std::string reply, int response = 200, std::string version = "HTTP/1.0")
     {
         std::string type = "text/plain; version=0.0.4";
         std::string status = "200 OK";
@@ -34,7 +40,7 @@ namespace custom
                               status.c_str(), reply.length(), type.c_str(), reply.c_str());
     }
 
-    std::vector<std::string> split(const std::string &s, std::string delimiter = ".")
+    inline std::vector<std::string> split(const std::string &s, std::string delimiter = ".")
     {
         // for string delimiter
         size_t pos_start = 0, pos_end, delim_len = delimiter.length();
@@ -52,4 +58,7 @@ namespace custom
 
         return res;
     }
+
 }
+
+#endif

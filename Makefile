@@ -1,18 +1,24 @@
 
 CC=g++ -std=c++20 -Iinclude
-LINK=-lvirt
+CFLAGS=-c -Wall
+SOURCES=$(wildcard src/*.cpp)
+OBJECTS=$(SOURCES:.cpp=.o)
+LDFLAGS=-lvirt
+EXECUTABLE=libvirt-prometheus-exporter
 
-.PHONY: all
-all: clean libvirt-prometheus-exporter
+all: clean $(SOURCES) $(EXECUTABLE) 
 
-libvirt-prometheus-exporter: src/prometheus.cpp
-	$(CC) $< -o $@ $(LINK)
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
+
+.cpp.o:
+	$(CC) $(CFLAGS) $< -o $@
 
 clean: 
-	rm -f libvirt-prometheus-exporter 
+	rm -f $(EXECUTABLE) $(OBJECTS)
 
 uninstall:
-	rm -f /usr/bin/libvirt-prometheus-exporter
+	rm -f /usr/bin/$(EXECUTABLE)
 
 install:
-	install -m 0755 libvirt-prometheus-exporter /usr/bin
+	install -m 0755 $(EXECUTABLE) /usr/bin

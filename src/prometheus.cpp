@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <string>
 #include <string.h>
 #include <fcntl.h>
 #include <sys/types.h>
@@ -18,7 +19,8 @@
 #include <sys/socket.h>
 #include <sys/epoll.h>
 #include <unistd.h>
-#include <format.h>
+#include <format.hpp>
+#include <serializers.hpp>
 #include <libvirt/libvirt.h>
 
 #define MAX_EVENTS 10
@@ -194,8 +196,8 @@ int main(int argc, char **argv)
 
     // Setup a stream_server, and use the lambda below
     // for data-processing.
-    int res = stream_server(port, [&conn](int fd) -> void
-                            {
+    stream_server(port, [&conn](int fd) -> void
+                  {
                                 // read from socket, consume data.
                                 char buffer[4096] = {0};
                                 ssize_t bytes = recv(fd, buffer, 4096, 0);
@@ -208,71 +210,53 @@ int main(int argc, char **argv)
                                     std::string body;
                                     virDomainPtr *domains;
                                     body.append("# prometheus data\n");
-                                    body.append("# TYPE vcpu_current gauge\n");
-                                    body.append("# TYPE vcpu_maximum gauge\n");
-                                    body.append("# TYPE vcpu_time counter\n");
-                                    body.append("# TYPE vcpu_wait counter\n");
-                                    body.append("# TYPE vcpu_delay counter\n");
-                                    body.append("# TYPE vcpu_state gauge\n");
 
                                     // List, domains and take stats.
                                     unsigned int flags = VIR_CONNECT_LIST_DOMAINS_RUNNING;
-                                    int ret = virConnectListAllDomains(conn, &domains, flags);
+                                    size_t ret = virConnectListAllDomains(conn, &domains, flags);
                                     if (ret > 0)
                                     {
                                         for (i = 0; i < ret; i++)
                                         {
-                                            size_t j;
                                             virDomainStatsRecordPtr *stats;
-                                            int rc = virDomainListGetStats(&domains[i],
+                                            size_t rc = virDomainListGetStats(&domains[i],
                                                                            virDomainStatsTypes::VIR_DOMAIN_STATS_VCPU,
                                                                            &stats, VIR_CONNECT_GET_ALL_DOMAINS_STATS_NOWAIT);
                                             if (rc > 0)
                                             {
-                                                for (j = 0; j < rc; j++)
-                                                {
-                                                    virDomainStatsRecordPtr record = stats[j];
-                                                    size_t k = 0;
-                                                    for (k = 0; k < record->nparams; k++)
-                                                    {
-
-                                                        // input is vcpu, id, param
-                                                        std::vector<std::string> fields = custom::split(record->params[k].field);
-                                                        if (fields.size() == 3)
-                                                        {
-                                                            body.append(custom::format("%s_%s{domain=\"%s\", vcpu=\"%s\"} %llu\n",
-                                                                                       fields[0].c_str(),
-                                                                                       fields[2].c_str(),
-                                                                                       virDomainGetName(record->dom),
-                                                                                       fields[1].c_str(),
-                                                                                       record->params[k].value.ul));
-                                                        }
-
-                                                        if (fields.size() == 2)
-                                                        {
-                                                            body.append(custom::format("%s_%s{domain=\"%s\"} %llu\n",
-                                                                                       fields[0].c_str(), fields[1].c_str(),
-                                                                                       virDomainGetName(record->dom),
-                                                                                       record->params[k].value.ul));
-                                                        }
-                                                    }
-                                                }
+                                                serializer::vcpu_metrics(body, rc, stats);
 
                                                 // Free structures
                                                 virDomainStatsRecordListFree(stats);
-                                                virDomainFree(domains[i]);
+                                                
                                             }
+
+                                            // Network stats
+                                            size_t nrc = virDomainListGetStats(&domains[i],
+                                                                           virDomainStatsTypes::VIR_DOMAIN_STATS_INTERFACE,
+                                                                           &stats, VIR_CONNECT_GET_ALL_DOMAINS_STATS_NOWAIT);
+                                            if (nrc > 0)
+                                            {
+
+                                                serializer::network_metrics(body, nrc, stats);
+
+                                                // Free structures
+                                                virDomainStatsRecordListFree(stats);
+                                                
+                                            }
+
+                                            virDomainFree(domains[i]);
                                         }
 
                                         free(domains);
                                     }
+
                                     std::string output = custom::generate_prometheus(body);
                                     send(fd, output.c_str(), output.length(), 0);
                                 }
 
                                 if (bytes <= 0)
-                                    close(fd);
-                            });
+                                    close(fd); });
 
     if (conn != NULL)
         virConnectClose(conn);
