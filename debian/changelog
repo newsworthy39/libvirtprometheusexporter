@@ -1,6 +1,12 @@
+libvirt-prometheus-exporter (0.2.6) jammy; urgency=low
+
+  * FEATURE: Added network metrics
+
+ -- Newsworthy39 <newsworthy39@github.com>  Thu, 16 Sep 2023 20:48:37 +0000
+
 libvirt-prometheus-exporter (0.2.5) jammy; urgency=low
 
-  * BUGIFX: sanitize build, change signing key, moved into /usr/sbin
+  * BUGFIX: sanitize build, change signing key, moved into /usr/sbin
 
  -- Newsworthy39 <newsworthy39@github.com>  Thu, 16 Sep 2023 15:32:37 +0000
 
