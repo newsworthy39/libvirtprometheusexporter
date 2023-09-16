@@ -1,1 +1,1 @@
-libvirt-prometheus-exporter /usr/bin/
+libvirt-prometheus-exporter /usr/sbin/

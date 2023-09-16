@@ -1,5 +1,5 @@
 Source: libvirt-prometheus-exporter  
-Maintainer: Michael Jensen <michaeljensendk@hotmail.com>
+Maintainer: Newsworthy39 <newsworthy39@github.com>
 Build-Depends: debhelper, libvirt-daemon (>= 8.0.0), libvirt-dev
 Standards-Version: 3.9.3
 Section: utils
