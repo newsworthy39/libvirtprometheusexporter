@@ -21,4 +21,4 @@ uninstall:
 	rm -f /usr/bin/$(EXECUTABLE)
 
 install:
-	install -m 0755 $(EXECUTABLE) /usr/bin
+	install -m 0755 $(EXECUTABLE) /usr/sbin
