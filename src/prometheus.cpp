@@ -196,67 +196,63 @@ int main(int argc, char **argv)
 
     // Setup a stream_server, and use the lambda below
     // for data-processing.
-    stream_server(port, [&conn](int fd) -> void
-                  {
-                                // read from socket, consume data.
-                                char buffer[4096] = {0};
-                                ssize_t bytes = recv(fd, buffer, 4096, 0);
+    stream_server(port, [&conn](int fd) -> void {
+        // read from socket, consume data.
+        char buffer[4096] = {0};
+        ssize_t bytes = recv(fd, buffer, 4096, 0);
 
-                                // Deal with different reading-scenarios.
-                                if (bytes > 0)
-                                {
-                                    // Generate output
-                                    size_t i;
-                                    std::string body;
-                                    virDomainPtr *domains;
-                                    body.append("# prometheus data\n");
+        // Deal with different reading-scenarios.
+        if (bytes > 0) {
 
-                                    // List, domains and take stats.
-                                    unsigned int flags = VIR_CONNECT_LIST_DOMAINS_RUNNING;
-                                    size_t ret = virConnectListAllDomains(conn, &domains, flags);
-                                    if (ret > 0)
-                                    {
-                                        for (i = 0; i < ret; i++)
-                                        {
-                                            virDomainStatsRecordPtr *stats;
-                                            size_t rc = virDomainListGetStats(&domains[i],
-                                                                           virDomainStatsTypes::VIR_DOMAIN_STATS_VCPU,
-                                                                           &stats, VIR_CONNECT_GET_ALL_DOMAINS_STATS_NOWAIT);
-                                            if (rc > 0)
-                                            {
-                                                serializer::vcpu_metrics(body, rc, stats);
+            // Generate output
+            std::string body;
+            virDomainPtr *doms;
+            body.append("# prometheus data\n");
 
-                                                // Free structures
-                                                virDomainStatsRecordListFree(stats);
-                                                
-                                            }
+            // List, domains and take stats, but only if something is there.
+            unsigned int flags = VIR_CONNECT_LIST_DOMAINS_RUNNING;
+            size_t ret = virConnectListAllDomains(conn, &doms, flags);
+            if (ret <= 0) {
+                std::string output = custom::generate_prometheus(body);
+                send(fd, output.c_str(), output.length(), 0);
+                return;
+            }
 
-                                            // Network stats
-                                            size_t nrc = virDomainListGetStats(&domains[i],
-                                                                           virDomainStatsTypes::VIR_DOMAIN_STATS_INTERFACE,
-                                                                           &stats, VIR_CONNECT_GET_ALL_DOMAINS_STATS_NOWAIT);
-                                            if (nrc > 0)
-                                            {
+            // cpu-stats.
+            virDomainStatsRecordPtr *statscpu;
+            size_t rc = virDomainListGetStats(doms,
+                                            virDomainStatsTypes::VIR_DOMAIN_STATS_VCPU,
+                                            &statscpu, VIR_CONNECT_GET_ALL_DOMAINS_STATS_NOWAIT);
+                                            
+            if (rc > 0)
+            {
+                serializer::vcpu_metrics(body, rc, statscpu);
+            }
+            // Free structures
+            virDomainStatsRecordListFree(statscpu);             
 
-                                                serializer::network_metrics(body, nrc, stats);
+            // Network stats
+            virDomainStatsRecordPtr *statsnet;
+            size_t nrc = virDomainListGetStats(doms,
+                                            virDomainStatsTypes::VIR_DOMAIN_STATS_INTERFACE,
+                                            &statsnet, VIR_CONNECT_GET_ALL_DOMAINS_STATS_NOWAIT);
+            if (nrc > 0)
+            {
+                serializer::network_metrics(body, nrc, statsnet);                
+            }
+            // Free structures
+            virDomainStatsRecordListFree(statsnet);
 
-                                                // Free structures
-                                                virDomainStatsRecordListFree(stats);
-                                                
-                                            }
+            // allways free here.            
+            free(doms);
 
-                                            virDomainFree(domains[i]);
-                                        }
+            std::string output = custom::generate_prometheus(body);
+            send(fd, output.c_str(), output.length(), 0);
+        }
 
-                                        free(domains);
-                                    }
-
-                                    std::string output = custom::generate_prometheus(body);
-                                    send(fd, output.c_str(), output.length(), 0);
-                                }
-
-                                if (bytes <= 0)
-                                    close(fd); });
+        if (bytes <= 0)
+            close(fd); 
+    });
 
     if (conn != NULL)
         virConnectClose(conn);

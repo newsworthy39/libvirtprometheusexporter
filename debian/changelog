@@ -1,3 +1,9 @@
+libvirt-prometheus-exporter (0.2.7) jammy; urgency=low
+
+  * CHORE: Cleanup network-metrics.
+
+ -- Newsworthy39 <newsworthy39@github.com>  Thu, 17 Sep 2023 12:44:37 +0000
+
 libvirt-prometheus-exporter (0.2.6) jammy; urgency=low
 
   * FEATURE: Added network metrics

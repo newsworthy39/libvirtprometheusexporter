@@ -53,7 +53,7 @@ namespace serializer
 
                 if (fields.size() == 4)
                 {
-                    out.append(custom::format("# TYPE %s_%s_%s\n", fields[0].c_str(), fields[3].c_str(), fields[2].c_str()));
+                    out.append(custom::format("# TYPE %s_%s_%s counter\n", fields[0].c_str(), fields[3].c_str(), fields[2].c_str()));
                     out.append(custom::format("%s_%s_%s{domain=\"%s\" interfaceid=\"%s\", name=\"%s\"} %llu\n",
                                               fields[0].c_str(), fields[3].c_str(), fields[2].c_str(), // => net_bytes_rx
                                               virDomainGetName(record->dom), fields[1].c_str(), netname.c_str(),
