@@ -1,3 +1,9 @@
+libvirt-prometheus-exporter (0.2.8) jammy; urgency=low
+
+  * BUGFIX: Wrong ownership of files.
+
+ -- Newsworthy39 <newsworthy39@github.com>  Thu, 17 Sep 2023 12:56:37 +0000
+
 libvirt-prometheus-exporter (0.2.7) jammy; urgency=low
 
   * CHORE: Cleanup network-metrics.
