@@ -18,7 +18,7 @@ clean:
 	rm -f $(EXECUTABLE) $(OBJECTS)
 
 uninstall:
-	rm -f /usr/bin/$(EXECUTABLE)
+	rm -f /usr/sbin/$(EXECUTABLE)
 
 install:
 	install -m 0755 $(EXECUTABLE) /usr/sbin

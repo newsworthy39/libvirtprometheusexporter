@@ -1,3 +1,9 @@
+libvirt-prometheus-exporter (0.2.9) jammy; urgency=low
+
+  * CHORE: Rename labels to comply with namespace-relevance.
+
+ -- Newsworthy39 <newsworthy39@github.com>  Thu, 18 Sep 2023 17:32:37 +0000
+
 libvirt-prometheus-exporter (0.2.8) jammy; urgency=low
 
   * BUGFIX: Wrong ownership of files.
