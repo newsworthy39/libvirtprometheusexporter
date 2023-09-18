@@ -23,12 +23,18 @@
 			<target dev="vda" bus="virtio" />
 		</disk>
 
-		<interface type="network">
-			<source network="default" />
+		<interface type="direct">
+			<mac address='52:54:00:bb:61:27'/>
+			<source dev="enp0s3" mode="bridge" />
 			<model type="virtio" />
 		</interface>
 		<graphics type='vnc' port='-1' listen="0.0.0.0" autoport="yes" />
 		<watchdog model='i6300esb' action='poweroff' />
 		<memballoon model='virtio'/>
 	</devices>
+       <features>
+               <pae />
+               <acpi />
+               <apic />
+       </features>
 </domain>

@@ -1,0 +1,1 @@
+ avg(rate(vcpu_time[30s])/100000000) by (domain)
