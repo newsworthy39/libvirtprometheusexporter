@@ -1,3 +1,9 @@
+libvirt-prometheus-exporter (0.2.10) jammy; urgency=low
+
+  * BUGFIX: Rename labels to comply with namespace-relevance.
+
+ -- Newsworthy39 <newsworthy39@github.com>  Thu, 18 Sep 2023 20:33:37 +0000
+
 libvirt-prometheus-exporter (0.2.9) jammy; urgency=low
 
   * CHORE: Rename labels to comply with namespace-relevance.
