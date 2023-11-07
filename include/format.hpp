@@ -5,6 +5,7 @@
 #include <string>
 #include <stdexcept>
 #include <vector>
+#include <libvirt/libvirt.h>
 
 namespace custom
 {
@@ -57,6 +58,21 @@ namespace custom
         res.push_back(s.substr(pos_start));
 
         return res;
+    }
+
+    inline int virDomainGetTenant(virDomainPtr domain, char *buf)
+    {
+        // Get metadata,
+        const char *domain_meta_xml = virDomainGetMetadata(domain,
+                                                           virDomainMetadataType::VIR_DOMAIN_METADATA_ELEMENT,
+                                                           "http://portfolio.org/virtualization/instance",
+                                                           virDomainModificationImpact::VIR_DOMAIN_AFFECT_CURRENT);
+        if (domain_meta_xml != NULL) {
+            strncpy(buf, &domain_meta_xml[32], 36); // TODO: horrible.
+            return 1;
+        }
+
+        return 0;
     }
 
 }

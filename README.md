@@ -20,6 +20,7 @@
 - debhelper (>9.0)
 - g++ (>10)
 - Make
+- devscripts
 
 ## build
     bash devops/build.sh

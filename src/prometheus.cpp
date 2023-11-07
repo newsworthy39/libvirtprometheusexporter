@@ -206,7 +206,7 @@ int main(int argc, char **argv)
 
             // Generate output
             std::string body;
-            virDomainPtr *doms;
+            virDomainPtr *doms = { 0 };
             body.append("# prometheus data\n");
 
             // List, domains and take stats, but only if something is there.
@@ -242,6 +242,18 @@ int main(int argc, char **argv)
             }
             // Free structures
             virDomainStatsRecordListFree(statsnet);
+
+             // block stats
+            virDomainStatsRecordPtr *statsblocks;
+            size_t nrb = virDomainListGetStats(doms,
+                                            virDomainStatsTypes::VIR_DOMAIN_STATS_BLOCK,
+                                            &statsblocks, VIR_CONNECT_GET_ALL_DOMAINS_STATS_NOWAIT);
+            if (nrb > 0)
+            {
+                serializer::block_metrics(body, nrc, statsblocks);                
+            }
+            // Free structures
+            virDomainStatsRecordListFree(statsblocks);
 
             // allways free here.            
             free(doms);

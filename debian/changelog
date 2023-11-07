@@ -1,3 +1,9 @@
+libvirt-prometheus-exporter (0.2.11) jammy; urgency=low
+
+  * BUGFIX: Added tenancy uuid from metadata and libvirt_number_up
+
+ -- Newsworthy39 <newsworthy39@github.com>  Thu, 7 Nov 2023 20:48:37 +0000
+
 libvirt-prometheus-exporter (0.2.10) jammy; urgency=low
 
   * BUGFIX: Rename labels to comply with namespace-relevance.
