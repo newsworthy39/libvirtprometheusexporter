@@ -176,6 +176,8 @@ int stream_server(int port, std::function<void(int)> fnc)
  */
 int main(int argc, char **argv)
 {
+    long long requests = 0;
+
     if (argc != 3)
     {
         fprintf(stderr, "syntax: %s: http-port libvirt-uri\n", argv[0]);
@@ -196,7 +198,7 @@ int main(int argc, char **argv)
 
     // Setup a stream_server, and use the lambda below
     // for data-processing.
-    stream_server(port, [&conn](int fd) -> void {
+    stream_server(port, [&conn, &requests](int fd) -> void {
         // read from socket, consume data.
         char buffer[4096] = {0};
         ssize_t bytes = recv(fd, buffer, 4096, 0);
@@ -254,6 +256,26 @@ int main(int argc, char **argv)
             }
             // Free structures
             virDomainStatsRecordListFree(statsblocks);
+
+            // Make "up
+            for (size_t j = 0; j < ret; j++) {
+            
+                char tenantuuid[4096] = {0};
+                custom::virDomainGetTenant(*(&doms[j]), &tenantuuid[0]);
+
+                char uuid[4096] = {0};
+                virDomainGetUUIDString(*(&doms[j]), uuid);
+
+                body.append(custom::format("# TYPE libvirt_%s gauge\n", "up"));
+                body.append(custom::format("libvirt_up{domain=\"%s\" uuid=\"%s\" tenant=\"%s\"} 1\n",
+                                              virDomainGetName(*(&doms[j])), 
+                                              uuid,
+                                              tenantuuid));
+            }
+
+            // Stats about the exporter
+            body.append(custom::format("# TYPE libvirt_%s counter\n", "requests"));
+            body.append(custom::format("libvirt_requests %ld\n", ++requests));
 
             // allways free here.            
             free(doms);

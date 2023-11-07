@@ -1,3 +1,9 @@
+libvirt-prometheus-exporter (0.2.12) jammy; urgency=low
+
+  * BUGFIX: Added libvirt_up and libvirt_requests
+
+ -- Newsworthy39 <newsworthy39@github.com>  Thu, 7 Nov 2023 21:54:37 +0000
+
 libvirt-prometheus-exporter (0.2.11) jammy; urgency=low
 
   * BUGFIX: Added tenancy uuid from metadata and libvirt_number_up
